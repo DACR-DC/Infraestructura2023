@@ -1,0 +1,100 @@
+use BD_Hoteleria;
+
+
+create table tbl_TipoHabitacion(
+  thab_id int not null auto_increment primary key,
+  thab_nombre varchar(50) not null,
+  thab_descripcion varchar(50) not null,
+  thab_precio double not null,
+  thab_capacidad int not null 
+);
+
+
+create table tbl_Habitacion(
+  hab_id int not null auto_increment primary key,
+  hab_numero int not null,
+  hab_tipo int not null,
+  hab_estado int not null,
+  FOREIGN KEY (hab_tipo) REFERENCES tbl_TipoHabitacion(thab_id)
+);
+
+
+create table tbl_Cliente(
+  cli_id int not null auto_increment primary key,
+  cli_nombre varchar(80) not null,
+  cli_apellido varchar(80) not null,
+  cli_correo varchar(20) not null,
+  cli_telefono varchar(10) not null,
+  cli_nit varchar(20) not null
+);
+create table tbl_Empleado(
+  emp_id int not null auto_increment primary key,
+  emp_nombre varchar(80) not null,
+  emp_apellido varchar(80) not null,
+  emp_correo varchar(20) not null,
+  emp_telefono varchar(10) not null,
+  emp_nit varchar(20) not null
+);
+
+create table tbl_Reservacion(
+  res_id int not null auto_increment primary key,
+  res_id_habitacion int not null,
+  res_id_cliente int not null,
+  res_fecha date not null,
+  res_id_empleado int not null,
+  estado int,
+  FOREIGN KEY (res_id_habitacion) REFERENCES tbl_Habitacion(hab_id),
+  FOREIGN KEY (res_id_cliente) REFERENCES tbl_Cliente(cli_id),
+  FOREIGN KEY (res_id_empleado) REFERENCES tbl_Empleado(emp_id)
+);
+
+
+create table tbl_Evaluacion(
+  eva_id int not null auto_increment primary key,
+  eva_fecha date not null,
+  eva_descripcion varchar(100) not null,
+  eva_estado_calidad int not null,
+  eva_id_empleado int not null,
+  foreign key (eva_id_empleado) REFERENCES tbl_Empleado(emp_id)
+);
+
+
+create table tbl_Entrada(
+  in_id int not null auto_increment primary key,
+  in_id_evaluacion int not null ,
+  in_id_cliente int not null,
+  in_id_habitacion int not null,
+  foreign key (in_id_cliente) REFERENCES tbl_Cliente(cli_id),
+  foreign key (in_id_habitacion) REFERENCES tbl_Habitacion(hab_id),
+  foreign key (in_id_evaluacion) REFERENCES tbl_Evaluacion(eva_id)
+);
+
+
+create table tbl_Salida(
+  in_id int not null auto_increment primary key,
+  in_id_evaluacion int not null ,
+  in_id_cliente int not null,
+  in_id_habitacion int not null,
+  foreign key (in_id_cliente) REFERENCES tbl_Cliente(cli_id),
+  foreign key (in_id_habitacion) REFERENCES tbl_Habitacion(hab_id),
+  foreign key (in_id_evaluacion) REFERENCES tbl_Evaluacion(eva_id)
+);
+
+INSERT INTO `tbl_aplicaciones` VALUES (7000,'MDI Hoteleria','PARA HOTELERIA',1),
+  (7001,'Reservas Hotel','PARA HOTELERIA',1),
+  (7002,'Gestion de Huespedes','HOTELERIA',1),
+  (7003,'Gestion de Habitaciones','HOTELERIA',1),
+  (7004,'Gestion de Salones','HOTELERIA',1),
+  (7005,'Mant. Ordenes Produccion','HOTELERIA',1),
+  (7006,'Mant. Recetas','HOTELERIA',1),
+  (7007,'Mant. Procesos Produccion','HOTELERIA',1),
+  (7008,'Mant. Ordenes de Produccion','HOTELERIA',1),
+  (7009,'Mant. Implosion y Explosion de materiales','HOTELERIA',1);
+
+
+INSERT INTO `tbl_modulos` VALUES (7000,'Hoteleria','Hoteleria',1);
+
+
+insert into tbl_asignacionmoduloaplicacion values (7000,7000),(7000,7001),(7000,7002),(7000,7003),(7000,7004),(7000,7005),(7000,7006),(7000,7007),(7000,7008),(7000,7009);
+
+INSERT INTO `tbl_permisosaplicacionperfil` VALUES(1,7000,1,1,1,1,1),(1,7001,1,1,1,1,1),(1,7002,1,1,1,1,1),(1,7003,1,1,1,1,1),(1,7004,1,1,1,1,1),(1,7005,1,1,1,1,1),(1,7006,1,1,1,1,1),(1,7007,1,1,1,1,1),(1,7008,1,1,1,1,1),(1,7009,1,1,1,1,1)

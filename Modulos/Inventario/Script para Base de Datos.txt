@@ -1,0 +1,124 @@
+use bd_hoteleria_pruebas;
+/*--------------------SEGURIDAD---------------*/
+-- -----MODULOS
+
+INSERT INTO `tbl_modulos` VALUES
+('4000', 'LOGISTICA', 'Inventario', 1)
+;
+
+-- -----APLICACIONES
+INSERT INTO `tbl_aplicaciones` VALUES
+('4000', 'MDI Logistica', 'Inventario', '1'),
+('4001', 'Movimiento Inventario', 'Movimiento', '1'),
+('4002', 'Muestreo', 'Muestreo', '1'),
+('4003', 'Auditoria', 'Auditoria', '1'),
+('4004', 'Mantenimientos', 'Mantenimientos', '1'),
+('4005', 'Traslados de Producto', 'Traslados', '1')
+
+;
+
+
+
+-- -----ASIGNACIÓNES MODULO A APLICACION
+INSERT INTO `tbl_asignacionmoduloaplicacion` VALUES
+('4000', '4000'),
+('4000', '4001'),
+('4000', '4002'),
+('4000', '4003'),
+('4000', '4004'),
+('4000', '4005')
+;
+
+-- -----PERMISOS DE APLICACIONES A PERFILES
+INSERT INTO `tbl_permisosAplicacionPerfil` VALUES
+('1', '4000', '1', '1', '1', '1', '1'),
+('1', '4001', '1', '1', '1', '1', '1'),
+('1', '4002', '1', '1', '1', '1', '1'),
+('1', '4003', '1', '1', '1', '1', '1'),
+('1', '4004', '1', '1', '1', '1', '1'),
+('1', '4005', '1', '1', '1', '1', '1')
+;
+
+CREATE TABLE tbl_mantenimientos (
+    pk_Man_id INT PRIMARY KEY,
+    Man_codigo VARCHAR(255),
+    Man_nombre VARCHAR(255),
+    Man_cuenta VARCHAR(255),
+    Man_fecha DATE,
+    Man_almacen VARCHAR(255),
+    Man_Tipo VARCHAR(255),
+    Man_Estatus VARCHAR(255),
+    Man_relacion VARCHAR(255)
+);
+
+INSERT INTO tbl_mantenimientos (pk_Man_id, Man_codigo, Man_nombre, Man_cuenta, Man_fecha, Man_almacen, Man_Tipo, Man_Estatus, Man_relacion)
+VALUES
+    (1,'MNT001', 'Mantenimiento 1', 'Cuenta 001', '2023-10-26', 'Almacén 1', 'Preventivo', 'Pendiente', 'Relación 1'),
+    (2,'MNT002', 'Mantenimiento 2', 'Cuenta 002', '2023-10-27', 'Almacén 2', 'Correctivo', 'Completado', 'Relación 2'),
+    (3,'MNT003', 'Mantenimiento 3', 'Cuenta 003', '2023-10-28', 'Almacén 1', 'Preventivo', 'Pendiente', 'Relación 3');
+    
+CREATE TABLE tbl_mov_inventario (
+    pk_id INT,
+    mov_almacen VARCHAR(255),
+    mov_movimiento VARCHAR(255),
+    mov_documento VARCHAR(255),
+    mov_fecha DATE,
+    mov_cod_producto VARCHAR(255),
+    mov_medida_producto VARCHAR(255),
+    mov_cantidad INT,
+    mov_costo double,
+    mov_preciou double,
+    PRIMARY KEY (pk_id)
+);
+
+
+INSERT INTO tbl_mov_inventario (pk_id, mov_almacen, mov_movimiento, mov_documento, mov_fecha, mov_cod_producto, mov_medida_producto, mov_cantidad, mov_costo, mov_preciou)
+VALUES
+(1, 'Almacen A', 'Entrada', 'Documento 1', '2023-11-03', 'COD001', 'Unidades', 100, 10, 15),
+(2, 'Almacen B', 'Salida', 'Documento 2', '2023-11-03', 'COD002', 'Kilos', 50, 5, 7);
+
+CREATE TABLE tbl_bodega (
+  PK_Codigo_bodega int(11) NOT NULL,
+  Nombre_Bodega varchar(45) DEFAULT NULL,
+  Encargado varchar(45) DEFAULT NULL,
+  Tipo_Bodega varchar(45) DEFAULT NULL,
+  Ubicacion_Bodega varchar(45) DEFAULT NULL,
+  estatus int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla tbl_bodega
+--
+
+INSERT INTO tbl_bodega (PK_Codigo_bodega, Nombre_Bodega, Encargado, Tipo_Bodega, Ubicacion_Bodega, estatus) VALUES
+(1, 'BODEGA A', 'JOSE', 'BODEGA CENTRAL', '4 CALLE', 0),
+(2, 'BODEGA B', 'MARIO', 'SUCURSAL', 'ZONA 10', 0);
+
+
+
+-- Tabla para Traslado de Productos
+DROP TABLE IF EXISTS `tbl_detallesmovimiento`;
+CREATE TABLE IF NOT EXISTS `tbl_detallesmovimiento` (
+  `Pk_DocumentoID` int NOT NULL,
+  `Pk_AlmacenID` varchar(50) NOT NULL,
+  `Doc_Numero` varchar(50) NOT NULL,
+  `Doc_Fecha` varchar(50) NOT NULL,
+  `Pk_ProductoID` varchar(50) NOT NULL,
+  `Prod_Nombre` varchar(50) NOT NULL,
+  `DetMov_Cantidad` varchar(50) NOT NULL,
+  `Det_MovCostoTotal` varchar(50) NOT NULL,
+  `Prod_PrecioUnitario` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`Pk_DocumentoID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Insertar el primer registro
+INSERT INTO `tbl_detallesmovimiento` (`Pk_DocumentoID`, `Pk_AlmacenID`, `Doc_Numero`, `Doc_Fecha`, `Pk_ProductoID`, `Prod_Nombre`, `DetMov_Cantidad`, `Det_MovCostoTotal`, `Prod_PrecioUnitario`)
+VALUES (1, 'Alm1', '001', '2023-11-07', 'Prod1', 'Producto 1', 10, 100.00, 10.00);
+
+-- Insertar el segundo registro
+INSERT INTO `tbl_detallesmovimiento` (`Pk_DocumentoID`, `Pk_AlmacenID`, `Doc_Numero`, `Doc_Fecha`, `Pk_ProductoID`, `Prod_Nombre`, `DetMov_Cantidad`, `Det_MovCostoTotal`, `Prod_PrecioUnitario`)
+VALUES (2, 'Alm2', '002', '2023-11-07', 'Prod2', 'Producto 2', 15, 150.00, 10.00);
+
+-- Insertar el tercer registro
+INSERT INTO `tbl_detallesmovimiento` (`Pk_DocumentoID`, `Pk_AlmacenID`, `Doc_Numero`, `Doc_Fecha`, `Pk_ProductoID`, `Prod_Nombre`, `DetMov_Cantidad`, `Det_MovCostoTotal`, `Prod_PrecioUnitario`)
+VALUES (3, 'Alm3', '003', '2023-11-07', 'Prod3', 'Producto 3', 20, 200.00, 10.00);
